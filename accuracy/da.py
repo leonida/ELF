@@ -12,10 +12,11 @@ opt = []
 for i in range(len(train)):
     # 读取每一行找到每轮迭代的最佳准确率
     if re.findall("best_win_rate*", train.loc[i][0]):
-        print(count)
         count += 1
         # 读取准确率的值并转化为float类型
         opt.append(float(train.loc[i][0][14:]))
+        print(count)
+        print(train.loc[i][0])
 
 for i in opt:
     print(i)
