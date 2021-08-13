@@ -48,7 +48,7 @@ def analysis(train):
 
     return winrate, timespent  # 返回list
 
-# 累计奖励
+# 累积奖励
 
 
 def accreward(train):
@@ -72,22 +72,53 @@ def accreward(train):
             print(count)
             print(train.loc[i][0])
 
+    return accreward
+
+# 花费
+
+
+def cost(train):
+    count = 0
+    cost = []
+    for i in range(len(train)):
+        # 读取每一行找到每轮迭代后的累计奖励
+        if re.findall("cost+", train.loc[i][0]):
+            count += 1
+            # 读取胜率的值并转化为float类型
+            if count <= 10:
+                cost.append(float(train.loc[i][0][18:25]))
+                print(float(train.loc[i][0][18:25]))
+            # 显示读取过程
+            elif count <= 100:
+                cost.append(float(train.loc[i][0][19:26]))
+                print(float(train.loc[i][0][19:26]))
+            elif count <= 1000:
+                cost.append(float(train.loc[i][0][20:27]))
+                print(float(train.loc[i][0][20:27]))
+            print(count)
+            print(train.loc[i][0])
+
+    return cost
+
 
 def showpic(x, y, name):
     plt.figure()
     plt.plot(x, y)
-    plt.xlabel('迭代轮数')
+    plt.xlabel('iters')
     plt.ylabel(name)
+    plt.savefig("./accuracy/" + name+".png")
     plt.show()
 
 
 if __name__ == '__main__':
     address = './accuracy/da.txt'
     train = readfile(address)
-
-    winrate, timespent = analysis(train)
-    x = np.arange(1, len(timespent)+1, 1)  # start end num x值
-    showpic(x, timespent, '时间花费')
-    showpic(x, winrate, '胜率')
+    # co = cost(train)
     # acc_reward = accreward(train)
+    winrate, timespent = analysis(train)
+    x = np.arange(1, len(winrate)+1, 1)  # start end num x值
+    # showpic(x, acc_reward, 'accreward')
+    # showpic(x, co, 'cost')
     # print(train.shape)
+    # showpic(x, timespent, '时间花费')
+    showpic(x, winrate, 'winrate')
