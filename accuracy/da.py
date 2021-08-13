@@ -14,12 +14,13 @@ def readfile(address):
     train = pd.DataFrame(file)
     return train
 
+# 胜率
 
-def analysis(train):
+
+def winrate(train):
 
     count = 0
     winrate = []  # 胜率
-    timespent = []  # 时间花费
 
     for i in range(len(train)):
         # 读取每一行找到每轮迭代的最佳胜率
@@ -31,8 +32,19 @@ def analysis(train):
             print(count)
             print(train.loc[i][0])
 
+    return winrate  # 返回list
+
+# 时间花费
+
+
+def timespent(train):
+
+    count = 0
+    timespent = []  # 时间花费
+
+    for i in range(len(train)):
         # 读取时间花费的值转化为float类型，单位s，保留三位小数,位置会变动
-        elif re.findall("Time+", train.loc[i][0]):
+        if re.findall("Time+", train.loc[i][0]):
             if count <= 10:
                 timespent.append(
                     format(float(train.loc[i][0][18:-3])/1000.0, '.3f'))
@@ -46,7 +58,8 @@ def analysis(train):
 
             print(train.loc[i][0])
 
-    return winrate, timespent  # 返回list
+    return timespent  # 返回list
+
 
 # 累积奖励
 
@@ -100,6 +113,8 @@ def cost(train):
 
     return cost
 
+# 画图
+
 
 def showpic(x, y, name):
     plt.figure()
@@ -115,10 +130,10 @@ if __name__ == '__main__':
     train = readfile(address)
     # co = cost(train)
     # acc_reward = accreward(train)
-    winrate, timespent = analysis(train)
-    x = np.arange(1, len(winrate)+1, 1)  # start end num x值
+    win_rate = winrate(train)
+    x = np.arange(1, len(win_rate)+1, 1)  # start end num x值
     # showpic(x, acc_reward, 'accreward')
     # showpic(x, co, 'cost')
     # print(train.shape)
     # showpic(x, timespent, '时间花费')
-    showpic(x, winrate, 'winrate')
+    showpic(x, win_rate, 'winrate')
