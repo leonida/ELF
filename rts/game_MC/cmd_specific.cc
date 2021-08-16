@@ -204,17 +204,17 @@ bool CmdGenerateUnit::run(GameEnv *env, CmdReceiver *receiver) {
 //     plan.plan["C"][0] = 10; plan.plan["C"][1] = 3; plan.plan["C"][2] = 2;
     // _CHANGE_RES(player_id, 10000);  // 给一个初始资源
     
-   for(int i=0;i<2;++i){
-       while(true){
-       if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,5,70),FLIGHT_NORMAL,first_round)) break;
-       }
-    }
+   // for(int i=0;i<2;++i){
+   //     while(true){
+   //     if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,5,70),FLIGHT_NORMAL,first_round)) break;
+   //     }
+   //  }
 
-    for(int i=0;i<2;++i){
-       while(true){
-       if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,5,70),FLIGHT_BASE,first_round)) break;
-       }
-    }
+   //  for(int i=0;i<2;++i){
+   //     while(true){
+   //     if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,5,70),FLIGHT_BASE,first_round)) break;
+   //     }
+   //  }
 
 
     // for(int i=0;i<5;++i){
@@ -224,23 +224,23 @@ bool CmdGenerateUnit::run(GameEnv *env, CmdReceiver *receiver) {
     // }
 
 
-    // 第一轮 5 B 5 C
-   //  for(int i=0;i<5;++i){
-   //     while(true){
-   //       if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,5,70),FLIGHT_NORMAL,first_round)) break;
-   //    //if(CreateFlight_Test(_tick,env,enemy_id, PointF(i*10 + 1,5),FLIGHT_NORMAL,first_round)) break;
-   //     }
-   //  }
+    // 第一轮 3 B 3 C
+    for(int i=0;i<3;++i){
+       while(true){
+         if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,5,70),FLIGHT_NORMAL,first_round)) break;
+      //if(CreateFlight_Test(_tick,env,enemy_id, PointF(i*10 + 1,5),FLIGHT_NORMAL,first_round)) break;
+       }
+    }
 
-   //  for(int i=0;i<5;++i){
-   //     while(true){
-   //      if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,5,70),FLIGHT_FAKE,first_round)) break;
-   //    //if(CreateFlight_Test(_tick,env,enemy_id, PointF(i*10 + 2,5),FLIGHT_FAKE,first_round)) break;
-   //     }
-   //  }
+    for(int i=0;i<3;++i){
+       while(true){
+        if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,5,70),FLIGHT_FAKE,first_round)) break;
+      //if(CreateFlight_Test(_tick,env,enemy_id, PointF(i*10 + 2,5),FLIGHT_FAKE,first_round)) break;
+       }
+    }
 
 
-   //  // 第二轮  2 A 5 B 3C
+   //  // 第二轮  2 A 3 B 3C
 
    //  for(int i=0;i<3;++i){
    //     while(true){
@@ -249,20 +249,20 @@ bool CmdGenerateUnit::run(GameEnv *env, CmdReceiver *receiver) {
    //     }
    //  }
 
-   //  for(int i=0;i<5;++i){
-   //     while(true){
-   //       if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,4,70),FLIGHT_FAKE,second_round)) break;
-   //   // if(CreateFlight_Test(_tick,env,enemy_id, PointF(69 - i*10 - 2,4),FLIGHT_FAKE,second_round)) break;
+    for(int i=0;i<3;++i){
+       while(true){
+         if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,4,70),FLIGHT_FAKE,second_round)) break;
+     // if(CreateFlight_Test(_tick,env,enemy_id, PointF(69 - i*10 - 2,4),FLIGHT_FAKE,second_round)) break;
       
-   //     }
-   //  }
+       }
+    }
 
-   //  for(int i=0;i<2;++i){
-   //     while(true){
-   //       if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,4,70),FLIGHT_BASE,second_round)) break;
-   //    //if(CreateFlight_Test(_tick,env,enemy_id, PointF(69 - i*10 - 3,4),FLIGHT_BASE,second_round)) break;
-   //     }
-   //  }
+    for(int i=0;i<2;++i){
+       while(true){
+         if(CreateFlight_Test(_tick,env,enemy_id, GetStartPoint_Test(env,4,70),FLIGHT_BASE,second_round)) break;
+      //if(CreateFlight_Test(_tick,env,enemy_id, PointF(69 - i*10 - 3,4),FLIGHT_BASE,second_round)) break;
+       }
+    }
 
 
 
