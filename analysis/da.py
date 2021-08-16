@@ -27,7 +27,7 @@ def winrate(train):
         if re.findall("best_win_rate+", train.loc[i][0]):
             count += 1
             # 读取胜率的值并转化为float类型
-            winrate.append(float(train.loc[i][0][14:]))
+            winrate.append(float(train.loc[i][0][14:20]))
             # 显示读取过程
             print(count)
             print(train.loc[i][0])
@@ -133,7 +133,7 @@ def cost(train):
                 cost.append(float(train.loc[i][0][20:27]))
                 print(float(train.loc[i][0][20:27]))
             print(count)
-            print(train.loc[i][0])
+            print(train.loc[i][0][:-5])
 
     return cost
 
@@ -145,21 +145,23 @@ def showpic(x, y, name):
     plt.plot(x, y)
     plt.xlabel('iters')
     plt.ylabel(name)
+    plt.plot(x, y, linewidth=1, color='red',
+             marker='o', markerfacecolor='orange', markersize=1)
+    plt.grid(c='g', linestyle='-.')  # 网格线
     plt.savefig("./analysis/" + name+".png")
     plt.show()
 
 
 if __name__ == '__main__':
-    address = './analysis/da.txt'
+    address = './analysis/da3.out'
     train = readfile(address)
     # print(train.shape)
-    avg_reward = avgreward(train)
+    # avg_reward = avgreward(train)
     # co = cost(train)
     # acc_reward = accreward(train)
-    # win_rate = winrate(train)
-    x = np.arange(1, len(avg_reward)+1, 1)  # start end num x值
+    win_rate = winrate(train)
+    x = np.arange(1, len(win_rate)+1, 1)  # start end num x值
     # showpic(x, acc_reward, 'accreward')
     # showpic(x, co, 'cost')
-    showpic(x, avg_reward, 'avgreward')
-    # showpic(x, timespent, '时间花费')
-    # showpic(x, win_rate, 'winrate')
+    # showpic(x, avg_reward, 'avgreward')
+    showpic(x, win_rate, 'winrate')
