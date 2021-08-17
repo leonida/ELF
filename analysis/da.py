@@ -156,12 +156,12 @@ if __name__ == '__main__':
     address = './analysis/da3.out'
     train = readfile(address)
     # print(train.shape)
-    # avg_reward = avgreward(train)
+    avg_reward = avgreward(train)
     # co = cost(train)
     # acc_reward = accreward(train)
-    win_rate = winrate(train)
-    x = np.arange(1, len(win_rate)+1, 1)  # start end num x值
+    # win_rate = winrate(train)
+    x = np.arange(1, len(avg_reward)+1, 1)  # start end num x值
     # showpic(x, acc_reward, 'accreward')
     # showpic(x, co, 'cost')
-    # showpic(x, avg_reward, 'avgreward')
-    showpic(x, win_rate, 'winrate')
+    showpic(x, avg_reward, 'avgreward')
+    # showpic(x, win_rate, 'winrate')
