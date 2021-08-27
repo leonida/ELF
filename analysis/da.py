@@ -47,17 +47,18 @@ def timespent(train):
         if re.findall("Time+", train.loc[i][0]):
             if count <= 10:
                 timespent.append(
-                    format(float(train.loc[i][0][18:-3])/1000.0, '.3f'))
+                    format(float(train.loc[i][0][18:-7])/1000.0, '.3f'))
             # 显示读取过程
             elif count <= 100:
                 timespent.append(
-                    format(float(train.loc[i][0][19:-3])/1000.0, '.3f'))
+                    format(float(train.loc[i][0][19:-7])/1000.0, '.3f'))
             elif count <= 1000:
                 timespent.append(
-                    format(float(train.loc[i][0][20:-3])/1000.0, '.3f'))
+                    format(float(train.loc[i][0][20:-7])/1000.0, '.3f'))
 
             print(train.loc[i][0])
 
+    print(np.array(timespent).astype(float).mean())
     return timespent  # 返回list
 
 # 平均奖励
@@ -148,20 +149,22 @@ def showpic(x, y, name):
     plt.plot(x, y, linewidth=1, color='red',
              marker='o', markerfacecolor='orange', markersize=1)
     plt.grid(c='g', linestyle='-.')  # 网格线
-    plt.savefig("./analysis/" + name+".png")
+    plt.savefig("./analysis/" + name+"5.png")
     plt.show()
 
 
 if __name__ == '__main__':
-    address = './analysis/da3.out'
+    address = './analysis/da5_lstm1_3lun.out'
     train = readfile(address)
     # print(train.shape)
-    avg_reward = avgreward(train)
+    # avg_reward = avgreward(train)
     # co = cost(train)
     # acc_reward = accreward(train)
-    # win_rate = winrate(train)
-    x = np.arange(1, len(avg_reward)+1, 1)  # start end num x值
+    win_rate = winrate(train)
+    # time_spend = timespent(train)
+    x = np.arange(1, len(win_rate)+1, 1)  # start end num x值
     # showpic(x, acc_reward, 'accreward')
     # showpic(x, co, 'cost')
-    showpic(x, avg_reward, 'avgreward')
-    # showpic(x, win_rate, 'winrate')
+    # showpic(x, avg_reward, 'avgreward')
+    showpic(x, win_rate, 'winrate')
+    # showpic(x, time_spend, 'timespend')
