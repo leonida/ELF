@@ -130,7 +130,7 @@ class DataProcess(Model):
         self.lstm = nn.LSTM(
             input_size=64,  # 输入数据
             hidden_size=256,  # rnn hidden unit
-            num_layers=6,  # 有几层 RNN layers
+            num_layers=1, # 有几层 RNN layers
             batch_first=True,  # input & output 会是以 batch size 为第一维度的特征集 e.g. (batch, time_step, input_size)
         )
         # self.gru = nn.GRU(
@@ -166,6 +166,7 @@ class DataProcess(Model):
 # 满足条件赋值为
 def where(cond, x_1, x_2):
     cond = cond.float()
+    # return torch.matmul(cond, x_1) + torch.matmul(cond, x_2)
     return (cond * x_1) + ((1-cond) * x_2)
 
 class TargetAttention(Model):
@@ -191,8 +192,8 @@ class TargetAttention(Model):
             # pdb.set_trace()
             pred = torch.split(enemy_raw,1,2)[7].contiguous().view(-1,enemy_raw.shape[1])
             attn_mask = pred
-            one = torch.ones(attn_mask.shape).cpu()
-            zero = torch.zeros(attn_mask.shape).cpu()
+            one = torch.ones(attn_mask.shape)
+            zero = torch.zeros(attn_mask.shape)
             attn_mask = where(attn_mask > 0,one,zero)
             attn_mask = attn_mask.byte()
             attn_mask = 1 - attn_mask
@@ -234,8 +235,8 @@ class TowerAttention(Model):
             # pdb.set_trace()
             attn_mask = pred * ammo * target_mask
 
-            one = torch.ones(attn_mask.shape).cpu()
-            zero = torch.zeros(attn_mask.shape).cpu()
+            one = torch.ones(attn_mask.shape)
+            zero = torch.zeros(attn_mask.shape)
             attn_mask = where(attn_mask > 0,one,zero)
             attn_mask = attn_mask.byte()
             attn_mask = 1 - attn_mask

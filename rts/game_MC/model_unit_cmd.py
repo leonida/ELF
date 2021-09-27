@@ -7,6 +7,8 @@
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
+from torch.distributions import Normal
+
 from copy import deepcopy
 from collections import Counter
 import numpy as np
@@ -99,16 +101,29 @@ class Model_ActorCritic(Model):
         self.dataProcess.set_volatile(self.volatile)
         base,radar,tower,tower_embedding,enemy,enemy_embedding,global_stat = self.dataProcess(x)
         self.dataProcess.set_volatile(False)
-
         
         value_test = self.value_test(global_stat)
         
-        round_prob = self.softmax(self.round_select(global_stat))
-        round_choose =   self.td_sampler.sample_with_eps(round_prob)  #  攻击方式
-        # import pdb
-        # pdb.set_trace()
-        enemy_attention = self.enemy_select(global_stat,enemy_embedding,x['s_enemy'],True)# 单位注意力
-        enemy_prob = self.softmax(enemy_attention)
+        
+        round_mu = self.round_select(global_stat)
+        round_sigma = self.round_select(global_stat) # sac
+        round_sigma = torch.clamp(round_sigma, -20, 2) 
+        round_std = round_sigma.exp()
+        dist = Normal(round_mu, round_std)
+        e = dist.sample()
+        round_prob = self.softmax(e)
+        
+        round_choose = self.td_sampler.sample_with_eps(round_prob)  #  攻击方式
+
+
+        enemy_mu = self.enemy_select(global_stat,enemy_embedding,x['s_enemy'],True)# 单位注意力
+        enemy_sigma = self.enemy_select(global_stat,enemy_embedding,x['s_enemy'],True)
+        enemy_sigma = torch.clamp(enemy_sigma, -20, 2)
+        enemy_std = enemy_sigma.exp()
+        
+        dist = Normal(enemy_mu, enemy_std)
+        e = dist.sample()
+        enemy_prob = self.softmax(e)
         enemy_choose =  self.td_sampler.sample_with_eps(enemy_prob)  #  攻击目标
         
         # 收集选择到的目标的特征
@@ -129,10 +144,17 @@ class Model_ActorCritic(Model):
         enemy_mask_select = enemy_mask_select.view(batch_size,-1)
         
         # 根据目标特征获取防御塔的注意力分布和mask
-        tower_attention = self.tower_select(global_stat,enemy_embedding_select,enemy_mask_select,tower_embedding,x['s_tower'],True)
-        tower_prob = self.softmax(tower_attention)
+        tower_mu = self.tower_select(global_stat,enemy_embedding_select,enemy_mask_select,tower_embedding,x['s_tower'],True)
+        tower_sigma = self.tower_select(global_stat,enemy_embedding_select,enemy_mask_select,tower_embedding,x['s_tower'],True)
+        tower_sigma = torch.clamp(tower_sigma, -20, 2)
+        tower_std = tower_sigma.exp()
+        dist = Normal(tower_mu, tower_std)
+        e = dist.sample()
+        tower_prob = self.softmax(e)
+         
         # tower_attention = Variable(tower_attention.data)
         tower_choose =  self.td_sampler.sample_with_eps(tower_prob)  # 防御塔
+        
         # import pdb
         # pdb.set_trace()
         return dict(V=value_test, uloc_prob=tower_prob, tloc_prob=enemy_prob, ct_prob = round_prob,action_type=1),dict(uloc = tower_choose.data,uloc_prob=tower_prob.data,tloc=enemy_choose.data,tloc_prob=enemy_prob.data,ct=round_choose.data,ct_prob = round_prob.data)

@@ -149,12 +149,12 @@ def showpic(x, y, name):
     plt.plot(x, y, linewidth=1, color='red',
              marker='o', markerfacecolor='orange', markersize=1)
     plt.grid(c='g', linestyle='-.')  # 网格线
-    plt.savefig("./analysis/" + name+"5.png")
+    plt.savefig("./analysis/" + name+"6.png")
     plt.show()
 
 
 if __name__ == '__main__':
-    address = './analysis/da5_lstm1_3lun.out'
+    address = './analysis/lstm1_2pi_18jia.out'
     train = readfile(address)
     # print(train.shape)
     # avg_reward = avgreward(train)

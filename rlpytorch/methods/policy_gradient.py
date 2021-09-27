@@ -102,7 +102,9 @@ class PolicyGradient:
             if grad_clip_norm is not None:
                 average_norm_clip(grad, grad_clip_norm)
             return grad
-        v.register_hook(bw_hook)
+        # https://stackoverflow.com/questions/63564508/how-to-automatically-disable-register-hook-when-model-is-in-eval-phase-in-pyto
+        if v.requires_grad:
+            v.register_hook(bw_hook)
 
     def feed(self, Q, pi_s, actions,  stats, old_pi_s=dict()):
         '''
