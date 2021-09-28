@@ -149,22 +149,43 @@ def showpic(x, y, name):
     plt.plot(x, y, linewidth=1, color='red',
              marker='o', markerfacecolor='orange', markersize=1)
     plt.grid(c='g', linestyle='-.')  # 网格线
-    plt.savefig("./analysis/" + name+"6.png")
+    plt.savefig(name+"8.png")
+    plt.show()
+
+
+def comparepic(x, y, y1, name):
+    plt.figure()
+
+    plt.plot(x, y, linewidth=1, color='red',
+             marker='o', markerfacecolor='orange', markersize=1, label='A3C')
+    plt.plot(x, y1, linewidth=1, color='orange',
+             marker='*', markerfacecolor='orange', markersize=1, label='A3C_SAC')
+    plt.xlabel('iters')
+    plt.ylabel(name)
+    plt.title(name + '_Compare')
+    plt.legend()
+    plt.grid(c='g', linestyle='-.')  # 网格线
+    plt.savefig(name+"_Compare.png")
     plt.show()
 
 
 if __name__ == '__main__':
-    address = './analysis/lstm1_2pi_18jia.out'
+    address = './tpi.out'
+    address1 = 'sac_2pi.out'
     train = readfile(address)
+    train1 = readfile(address1)
     # print(train.shape)
     # avg_reward = avgreward(train)
     # co = cost(train)
     # acc_reward = accreward(train)
     win_rate = winrate(train)
+    win_rate1 = winrate(train1)
     # time_spend = timespent(train)
-    x = np.arange(1, len(win_rate)+1, 1)  # start end num x值
+    length = min(len(win_rate), len(win_rate1))
+    x = np.arange(1, length + 1, 1)  # start end num x值
     # showpic(x, acc_reward, 'accreward')
     # showpic(x, co, 'cost')
     # showpic(x, avg_reward, 'avgreward')
-    showpic(x, win_rate, 'winrate')
+    # showpic(x, win_rate, 'winrate')
     # showpic(x, time_spend, 'timespend')
+    comparepic(x, win_rate[0:length], win_rate1[0:length], 'winrate')
